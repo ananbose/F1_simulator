@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
+#include <memory>
 using namespace std;
 /*
 Welcome ! I am writing a simple multithreaded program that does the following
@@ -37,11 +38,16 @@ struct Car_sensor
     Car_sensor(int _time , int _car_num, float _speed , float _acc): time(_time), car_num(_car_num), speed(_speed), acc(_acc) {}
 };
 
-struct Node {
+struct Car
+{
     int car_num;
-    //vector<float> position;// depending on position, we will insert or delete
+}
+
+struct Node {
     int position;
-    int place;//we will use this first which is a single digit. starting position will be 0 for all cars
-    Node *next;
+    int lap_num;
+    float delta_ahead;
+    float delta_behind;
+    shared_ptr<Car> car;
 };
 #endif
