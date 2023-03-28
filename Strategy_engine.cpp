@@ -1,8 +1,8 @@
 #include "node.h"
-
-class F1_Simulator
-{   Node *head;// init to nullptr
-    vector <Node*> car_list; 
+#include "race_engine.h"
+class F1_Strategist
+{   
+    list<Node*> car_list; 
     /*vector<float> car_position(float v, float a, int t, int r)
     {
 
@@ -14,10 +14,18 @@ class F1_Simulator
         return position;
     }
     */
-    //first calculate distance traveled based on velocity
-    int car_distance(float v) {
-        
-    }
+   F1_Strategist() {
+        for(int i =0; i<CARS;i++) {
+            Node * car = new Node;
+            car->car_num=i;
+            car->position = 0;
+            car->delta_next =0;
+            car->delta_prev =0;
+            car->lap_num =0;
+            car_list.push_back(car);
+            
+        }
+   }
     Car_sensor* thread_read_file(int thread_id, string file_name)
     {
         // open the file to read it
@@ -41,35 +49,20 @@ class F1_Simulator
         inputFile.close();
         return car_sensor;
     }
-    // Create the initial list of cars and give them positions at the start grid, strore in a vector
-    void create_initial_list(){
-        for(int i =0; i<CARS;i++) {
-            Node * car = new Node;
-            car->car_num=i;
-            car->position = 0;
-            car_list.push_back(car);
-        }
-    }
     void print_list() {
         for(const auto &car : car_list) {
             cout<<car->car_num<<" "<<car->position<<endl;
         }
     }
-    //Calculate position along the straight line, imagining distance to be infinite
-    
-    
-    bool compare_by_position(const Node &a , const Node &b) {
-        return a.position< b.position;
-    }
-    
-    // Sort the list of nodes based on position
-    void sort_based_on_position() {
-        for(int i =0; i<CARS; i++) {
-            car_list[i]->position = calculate_position(car_list[i]);
-        }
-        sort(car_list.begin(), car_list.end(), compare_by_position);
+   //get the car's position from race engine
+    list<Node*> get_attributes_from_track(RaceEngine re) {
+        car_list = {re.GetGridOrder().begin(), re.GetGridOrder().end()};
         print_list();
-
-
+        return car_list;
+    }
+    //make a decision to pit or not for the selected car
+    bool pit_stop_decision(Node * car) {
+       //lets say i was the only car on the track
+        
     }
 };
