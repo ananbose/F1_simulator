@@ -1,14 +1,12 @@
 #pragma once
 
 // Include any necessary libraries
-#include <iostream>
-#include <thread>
+#include<iostream>
 #include <vector>
 #include <cmath>
-#include <fstream>
-#include <sstream>
 #include <algorithm>
 #include <list>
+
 using namespace std;
 /*
 Welcome ! I am writing a simple multithreaded program that does the following
@@ -22,26 +20,6 @@ Welcome ! I am writing a simple multithreaded program that does the following
 //Global variables
 int LAPS = 5;
 int CARS = 5;
-struct Track
-{
-    // Assuming currently that it is a circle and the cars are moving points on the circle
-    int radius;
-};
-struct Car_sensor
-{
-    int car_num;
-    float speed;
-    float acc;
-    vector<float> position;
-    int position;
-    int time;
-    Car_sensor(int _time , int _car_num, float _speed , float _acc): time(_time), car_num(_car_num), speed(_speed), acc(_acc) {}
-};
-enum Tire {
-    Soft,
-    Medium, 
-    Hard
-};
 
 struct Node {
     int car_num;
@@ -50,5 +28,4 @@ struct Node {
     int lap_num;
     int delta_prev;
     int delta_next;
-    enum Tire t;
 };

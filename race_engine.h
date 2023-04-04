@@ -10,5 +10,5 @@ class RaceEngine
 {
     public:
     std::list<Node> GetGridOrder() const;
-    void tick const();
+    void tick() const;
 };
