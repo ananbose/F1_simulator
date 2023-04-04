@@ -1,19 +1,10 @@
 #include "node.h"
 #include "race_engine.h"
+#include "tire.h"
+#include <limits>
 class F1_Strategist
 {   
     list<Node*> car_list; 
-    /*vector<float> car_position(float v, float a, int t, int r)
-    {
-
-        float theta = (v * t + (0.5) * a * (t ^ 2)) / r;
-        float x = r * cos(theta);
-        float y = r * sin(theta);
-        position.push_back(x);
-        position.push_back(y);
-        return position;
-    }
-    */
    F1_Strategist() {
         for(int i =0; i<CARS;i++) {
             Node * car = new Node;
@@ -60,9 +51,35 @@ class F1_Strategist
         print_list();
         return car_list;
     }
-    //make a decision to pit or not for the selected car
-    bool pit_stop_decision(Node * car) {
-       //lets say i was the only car on the track
-        
+
+    //k tires and nth stint
+    float min_time_for_n_stints(Tire t, int n){
+        int tot_time =0;
+        for (int j =0; j<n;j++) {
+            tot_time += pow(t.get_d(),j)*t.get_min_time();
+        }
+        return tot_time;
+    }
+    float choose_tire(int n) {
+        vector<Tire> tires = {Tire(Soft), Tire(Medium), Tire(Hard)};
+        float min_time = numeric_limits<float>::max();
+        for(auto i:tires) {
+            min_time = min(min_time, min_time_for_n_stints(i,n));
+        }
+        return min_time;
+    }
+    //Assuming there is only one car in the track
+    float min_time_over_n_laps(Node * car, int n) {
+        int p = 30; // pit-stop time
+        vector <float> dp;//best tire strategy for every lap
+        dp.push_back(0);//dp[0] = 0
+        for(int i=1;i<n;i++) {
+            float min_dp = numeric_limits<float>::max();
+            for (int j=0;j<i;j++) {
+                min_dp = min(min_dp, dp[j]+ choose_tire(i-j) + p);
+            }
+            dp.push_back(min_dp);
+        }
+        return dp.back()-p;
     }
 };
