@@ -1,5 +1,5 @@
-#ifndef HEADER_FILE_NAME_H
-#define HEADER_FILE_NAME_H
+#pragma once
+
 // Include any necessary libraries
 #include <iostream>
 #include <thread>
@@ -8,7 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
-#include <memory>
+#include <list>
 using namespace std;
 /*
 Welcome ! I am writing a simple multithreaded program that does the following
@@ -37,17 +37,18 @@ struct Car_sensor
     int time;
     Car_sensor(int _time , int _car_num, float _speed , float _acc): time(_time), car_num(_car_num), speed(_speed), acc(_acc) {}
 };
-
-struct Car
-{
-    int car_num;
-}
+enum Tire {
+    Soft,
+    Medium, 
+    Hard
+};
 
 struct Node {
+    int car_num;
+    //vector<float> position;// depending on position, we will insert or delete
     int position;
     int lap_num;
-    float delta_ahead;
-    float delta_behind;
-    shared_ptr<Car> car;
+    int delta_prev;
+    int delta_next;
+    enum Tire t;
 };
-#endif
