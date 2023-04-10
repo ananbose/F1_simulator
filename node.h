@@ -6,7 +6,8 @@
 #include <cmath>
 #include <algorithm>
 #include <list>
-
+#include <map>
+const int INF = 1e9;
 using namespace std;
 /*
 Welcome ! I am writing a simple multithreaded program that does the following
@@ -18,8 +19,8 @@ Welcome ! I am writing a simple multithreaded program that does the following
 */
 
 //Global variables
-int LAPS = 5;
-int CARS = 5;
+int LAPS = 4;
+int CARS = 10;
 
 struct Node {
     int car_num;
