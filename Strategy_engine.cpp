@@ -37,7 +37,6 @@ class F1_Strategist
         for (int j =0; j<n;j++) {          
             tot_time += pow(t.get_d(),j)*t.get_min_time();
         }
-        //cout<<"total time after "<<n<<" laps is"<<tot_time<<" "<<t.TireToString()<<endl;
         return tot_time;
     }
  
@@ -50,10 +49,17 @@ class F1_Strategist
         }
         return min_time;
     }
-
+    //memoise the stint time so we do not have to calculate stint times every time
+    void calculate_stint_time(int n, vector<float> &stint_time) {
+        for (int i=0; i<n;i++) {
+            stint_time[i] = choose_tire(i);
+        }
+    }
     //Assuming there is only one car in the track
     float min_time_over_n_laps(int n) {
         float p = 30; // pit-stop time
+        vector<float> stint_time(n);
+        calculate_stint_time(n,stint_time);
         vector <float> dp;//best tire strategy for every lap
         dp.push_back(choose_tire(0));//best time on lap 0-> use soft-> 20
         
@@ -63,15 +69,13 @@ class F1_Strategist
                 cout<<"dp[j]"<<dp[j]<<endl;
                 cout<<"choose_tire[i-j]"<<(choose_tire(i-j)+p)<<endl;
                 cout<<"min dp"<<min_dp<<endl;
-                min_dp = min(min_dp, dp[j]+choose_tire(i-j) + p);//choose a tire for jth lap and choose different tire for i-j laps                
+                min_dp = min(min_dp, dp[j]+stint_time[i-j] + p);//choose a tire for jth lap and choose different tire for i-j laps                
             }
             cout<<"MIN DP for "<<i<<"th lap "<<min_dp<<" "<<endl;
             dp.push_back(min_dp);
         }
         return dp.back()-p;
     }
-
- 
 
 };
 int main() {
